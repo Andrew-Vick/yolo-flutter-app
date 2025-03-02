@@ -20,11 +20,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  ultralytics_yolo:
-    path: ../
+  ultralytics_yolo: ^0.0.3
   path: ^1.9.0
   path_provider: ^2.1.4
   permission_handler: ^11.3.1
+  video_player: ^2.9.3
 
 dev_dependencies:
   flutter_test:

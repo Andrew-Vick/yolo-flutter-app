@@ -150,11 +150,17 @@ class PlatformChannelUltralyticsYolo implements UltralyticsYoloPlatform {
 
     final objects = <DetectedObject>[];
 
-    result?.forEach((json) {
-      json = json as Map<dynamic, dynamic>?;
-      if (json == null) return;
-      objects.add(DetectedObject.fromJson(json));
-    });
+    // Fixed this to use the correct type, will elaborate if the fix works
+    if (result != null) {
+      for (var json in result) {
+        if (json is Map<Object?, Object?>) {
+          json = Map<String, dynamic>.from(json);
+          print(json);
+          print("This is the json");
+          objects.add(DetectedObject.fromJson(json));
+        }
+      }
+    }
 
     return objects;
   }
