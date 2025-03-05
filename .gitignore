@@ -30,3 +30,5 @@ migrate_working_dir/
 build/
 lib/ultralytics_yolo_platform_channel.dart
 example/lib/main.dart
+example/assets/IMG_7932.MOV
+example/assets/IMG_7934.MOV
