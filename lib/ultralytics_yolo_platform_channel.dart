@@ -141,12 +141,15 @@ class PlatformChannelUltralyticsYolo implements UltralyticsYoloPlatform {
 
   @override
   Future<List<DetectedObject?>?> detectImage(String imagePath) async {
+    print("Detecting image: $imagePath");
     final result =
         await methodChannel.invokeMethod<List<Object?>>('detectImage', {
       'imagePath': imagePath,
     }).catchError((_) {
+      print("Error in detectImage: $_");
       return <DetectedObject?>[];
     });
+    print("Detection result: $result");
 
     final objects = <DetectedObject>[];
 

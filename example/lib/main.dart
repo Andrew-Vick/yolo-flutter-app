@@ -107,29 +107,22 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
   /// Runs YOLO detection on a frame
   void _processFrame(String framePath) async {
-    print("Processing frame: $framePath"); // Debugging log
+    print("Processing frame: $framePath");
     try {
-      print("Starting detection..."); // Debugging log
-      final List<dynamic>? rawResult =
+      print("Starting detection...");
+      final List<DetectedObject?>? rawResult =
           await _predictor.detect(imagePath: framePath);
 
-      print("Raw detection result: $rawResult"); // Debugging log
+      print("Raw detection result: $rawResult");
 
       if (rawResult == null || rawResult.isEmpty) {
         print("No objects detected.");
         return;
       }
 
-      // Convert `_Map<Object?, Object?>` into `Map<String, dynamic>`
-      List<DetectedObject> detections = rawResult
-          .map((e) {
-            if (e is Map<Object?, Object?>) {
-              return DetectedObject.fromJson(Map<String, dynamic>.from(e));
-            }
-            return null;
-          })
-          .whereType<DetectedObject>() // Remove nulls
-          .toList();
+      // No need for further conversion—directly filter out nulls
+      List<DetectedObject> detections =
+          rawResult.whereType<DetectedObject>().toList();
 
       print("Detections found: ${detections.length}");
 
@@ -141,6 +134,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       print(stacktrace);
     }
   }
+
 
 
 
@@ -177,7 +171,7 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
 
 
   Future<ObjectDetector> _initObjectDetectorWithLocalModel() async {
-    final modelPath = await _copy('assets/yolov8n.mlmodel');
+    final modelPath = await _copy('assets/best.mlmodel');
     final model = LocalYoloModel(
       id: '',
       task: Task.detect,
