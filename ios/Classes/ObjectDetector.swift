@@ -149,6 +149,13 @@ public class ObjectDetector: Predictor {
     numItemsThreshold = numItems
   }
 
+  // Entry point for setting filter labels
+  private var filterLabels: [String] = []
+  public func filterByLabel(labels: [String]) {
+    print("SE416: Setting filter labels to: \(labels)")
+    self.filterLabels = labels
+  }
+
   private func processObservations(for request: VNRequest, error: Error?) {
     DispatchQueue.main.async {
       if let results = request.results as? [VNRecognizedObjectObservation] {
@@ -203,9 +210,23 @@ public class ObjectDetector: Predictor {
             // Scale normalized to pixels [375, 812] [width, height]
             rect = VNImageRectForNormalizedRect(rect, Int(width), Int(height))
 
+            let label = prediction.labels[0].identifier
+            print("SE416: Observed label: '\(label)', filter list: \(self.filterLabels)")
+
+            // Filter by label
+            // I ADDED THIS FOR SE416 PROJECT
+            let normalizedLabel = label.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+            let normalizedFilter = self.filterLabels.map {
+              $0.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+            }
+
+            if !normalizedFilter.isEmpty && !normalizedFilter.contains(normalizedLabel) {
+              print("SE416: Filtered out: \(normalizedLabel)")
+              continue
+            }
+
             // The labels array is a list of VNClassificationObservation objects,
             // with the highest scoring class first in the list.
-            let label = prediction.labels[0].identifier
             let index = self.labels.firstIndex(of: label) ?? 0
             let confidence = prediction.labels[0].confidence
             recognitions.append([

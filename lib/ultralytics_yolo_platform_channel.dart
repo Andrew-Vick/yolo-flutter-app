@@ -167,4 +167,11 @@ class PlatformChannelUltralyticsYolo implements UltralyticsYoloPlatform {
 
     return objects;
   }
+
+  /// Filters the detected objects based on the given [labels].
+  /// Returns a [String] message indicating the result of the operation.
+  @override
+  Future<String?> filterByLabel(List<String> labels) => methodChannel
+      .invokeMethod<String>('filterByLabel', {'labels': labels})
+      .catchError((dynamic e) => e.toString());
 }

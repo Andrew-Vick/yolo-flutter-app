@@ -108,4 +108,9 @@ abstract class UltralyticsYoloPlatform extends PlatformInterface {
   Stream<double>? get fpsRateStream {
     throw UnimplementedError('fpsRateStream has not been implemented.');
   }
+
+  /// Filter the detected objects based on the given [labels].
+  Future<String?> filterByLabel(List<String> labels) {
+    throw UnimplementedError('filterByClassId has not been implemented.');
+  }
 }

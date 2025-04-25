@@ -71,6 +71,10 @@ public class MethodCallHandler: NSObject, VideoCaptureDelegate, InferenceTimeLis
       closeCamera(args: args, result: result)
     case "detectImage", "classifyImage":
       predictOnImage(args: args, result: result)
+    case "filterByLabel":
+      // I ADDED THIS FOR SE416 PROJECT
+      print("DEBUG MethodHandler: filterByLabel called with args:", args)
+      filterByLabel(args: args, result: result)
     default:
       result(FlutterMethodNotImplemented)
     }
@@ -134,6 +138,16 @@ public class MethodCallHandler: NSObject, VideoCaptureDelegate, InferenceTimeLis
     } catch {
       result(flutterError)
     }
+  }
+
+  // Method to filter predictions based on label
+  private func filterByLabel(args: [String: Any], result: @escaping FlutterResult) {
+    guard let labels = args["labels"] as? [String] else {
+      result(FlutterError(code: "INVALID_ARGS", message: "Invalid labels argument", details: nil))
+      return
+    }
+    (predictor as? ObjectDetector)?.filterByLabel(labels: labels)
+    result(nil)
   }
 
   private func setConfidenceThreshold(args: [String: Any], result: @escaping FlutterResult) {

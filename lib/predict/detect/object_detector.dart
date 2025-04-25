@@ -26,6 +26,12 @@ class ObjectDetector extends Predictor {
     super.ultralyticsYoloPlatform.setNumItemsThreshold(numItems);
   }
 
+  /// Sets what labels to filter out.
+  /// I ADDED THIS FOR SE 416 PROJECT
+  void setLabelsToFilter(List<String> labels) {
+    super.ultralyticsYoloPlatform.filterByLabel(labels);
+  }
+
   /// Detects objects from the given [imagePath].
   Future<List<DetectedObject?>?> detect({required String imagePath}) =>
       super.ultralyticsYoloPlatform.detectImage(imagePath);
