@@ -211,17 +211,16 @@ public class ObjectDetector: Predictor {
             rect = VNImageRectForNormalizedRect(rect, Int(width), Int(height))
 
             let label = prediction.labels[0].identifier
-            print("SE416: Observed label: '\(label)', filter list: \(self.filterLabels)")
 
-            // Filter by label
-            // I ADDED THIS FOR SE416 PROJECT
+            // Normalize the label
             let normalizedLabel = label.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
             let normalizedFilter = self.filterLabels.map {
               $0.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
             }
 
+            // Check if the label is in the filter list
             if !normalizedFilter.isEmpty && !normalizedFilter.contains(normalizedLabel) {
-              print("SE416: Filtered out: \(normalizedLabel)")
+              // If the label is not in the filter list, skip this prediction
               continue
             }
 
